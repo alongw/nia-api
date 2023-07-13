@@ -26,7 +26,7 @@ template-plugins
 
 详见 `Docs` 文件夹中的 `apis.md`
 
-[接口文档](https://github.com/alongw/nia-api/blob/main/src/plugins/template-plugins/Docs/apis.md)
+[接口文档](https://github.com/nia-api/template-plugins/tree/main/Docs)
 
 ### 文件代码
 

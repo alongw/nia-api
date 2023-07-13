@@ -14,7 +14,7 @@
 
 项目中的每一个 API “插件” 都会放在 `plugins` 文件夹中，而不是 `router` 文件夹，这与传统的其他项目不同。如果有系统级别的 API （涉及到整个 API 服务器系统的 API ，没他就不能正常运行的 API ），那么他还是会被放在 `router` 文件夹下
 
-[示例路由插件](https://github.com/alongw/nia-api/tree/main/src/plugins/template-plugins)
+[示例路由插件](https://github.com/nia-api/template-plugins)
 
 插件接口结构：（没有后缀名的为文件夹）
 
