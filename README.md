@@ -87,34 +87,29 @@ export default router
         git clone https://github.com/alongw/nia-api.git
         ```
 
-        ```bash
-        git submodule init
-        git submodule update
-        ```
-
     -   使用任意包管理工具运行
 
         推荐使用 `yarn`
 
-        ```bash
+    ````bash
         yarn
-        yarn start
+    yarn start
         ```
 
         使用 `npm`
 
         ```bash
         npm install
-        npm run start
+    npm run start
         ```
 
     #### Release 稳定版构建
 
     -   从 Release 下载版本
 
-        ```bash
+    ```bash
         node ./app.js
-        ```
+    ````
 
 ### 构建项目
 
@@ -122,11 +117,6 @@ export default router
 
     ```bash
     git clone https://github.com/alongw/nia-api.git
-    ```
-
-    ```bash
-    git submodule init
-    git submodule update
     ```
 
 -   使用任意包管理工具运行
