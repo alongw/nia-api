@@ -1,3 +1,0 @@
-[submodule "src/plugins/template-plugins"]
-    path = src/plugins/template-plugins
-    url = https://github.com/nia-api/template-plugins
