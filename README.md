@@ -107,10 +107,9 @@ export default router
 
     -   从 Release 下载版本
 
-        `````bash
+        ```bash
         node ./app.js
-         		 ````
-        `````
+        ```
 
 ### 构建项目
 
