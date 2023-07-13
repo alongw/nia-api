@@ -1,6 +1,6 @@
 # Nia - Api
 
-<center><h2>项目介绍</h2></center>
+<h2 align="center">项目介绍</h2>
 
 ### 这是什么
 
@@ -73,7 +73,7 @@ export default router
 
 实际请求访问路径 `/插件名（插件文件夹的名字，也是配置文件里面的名字）/pay-images/getPayImages`
 
-<center><h2>部署和构建</h2></center>
+<h2 align="center">部署和构建</h2>
 
 ### 部署项目
 
@@ -162,7 +162,7 @@ export default router
 
 使用 `yarn build:lint` 以方便在没有安装全局环境时打包
 
-<center><h2>配置文件</h2></center>
+<h2 align="center">配置文件</h2>
 
 ### 生成配置文件
 
@@ -178,7 +178,7 @@ export default router
 
 // TODO：数据库配置文件信息
 
-<center><h2>路由插件</h2></center>
+<h2 align="center">路由插件</h2>
 
 ### 安装路由插件
 
@@ -196,7 +196,7 @@ cd ./plugins
 
 // TODO：修改配置文件
 
-<center><h2>Commit 和提交</h2></center>
+<h2 align="center">Commit 和提交</h2>
 
 ### Git Commit 语法检测和辅助编写
 
@@ -214,7 +214,7 @@ yarn cz
 git push
 ```
 
-<center><h2>使用工具和其他说明</h2></center>
+<h2 align="center">使用工具和其他说明</h2>
 
 ### 构建模板
 
