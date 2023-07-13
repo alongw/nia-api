@@ -33,7 +33,7 @@ GET
 
 query 参数
 
-```json
+```js
 {
 	"type": "wechay" | "alipay" | "qq" | "wechatpay" | null,
     "isurl": any | null
