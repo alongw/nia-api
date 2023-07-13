@@ -91,25 +91,26 @@ export default router
 
         推荐使用 `yarn`
 
-    ````bash
+        ```bash
         yarn
-    yarn start
+        yarn start
         ```
 
         使用 `npm`
 
         ```bash
         npm install
-    npm run start
+        npm run start
         ```
 
     #### Release 稳定版构建
 
     -   从 Release 下载版本
 
-    ```bash
+        `````bash
         node ./app.js
-    ````
+         		 ````
+        `````
 
 ### 构建项目
 
