@@ -85,6 +85,11 @@ export default router
         git clone https://github.com/alongw/nia-api.git
         ```
 
+        ```bash
+        git submodule init
+        git submodule update
+        ```
+
     -   使用任意包管理工具运行
 
         推荐使用 `yarn`
@@ -115,6 +120,11 @@ export default router
 
     ```bash
     git clone https://github.com/alongw/nia-api.git
+    ```
+
+    ```bash
+    git submodule init
+    git submodule update
     ```
 
 -   使用任意包管理工具运行
