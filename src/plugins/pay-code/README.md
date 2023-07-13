@@ -1,92 +1,69 @@
-<h1 align="center">示例插件</h1>
+# Pay-Code
 
-这是 `nia-api` 的示例路由插件
+`nia-api` 的路由插件
 
-### 目录结构
+用于获取收款码图片和获取收款地址
 
-```
-template-plugins
-├─ index.ts
-├─ README.md
-├─ Docs
-└─ router
- └─ helloWorld.ts
-└─ utils
- └─ getMsg.ts
-```
+#### 配置文件
 
-### 接口说明
+```yaml
+# 启用插件
+enable_plugins:
+    # ...
+    - pay-code
 
-由全局设置，路由的基础入口为 `/插件文件夹名/` ，故此时路径为 `/template-plugins/`
-
--   在 `index.ts` 中，我们使用了 `/router/helloWorld.ts` 的子路由，并且设置了入口为 `/helloWorld` ，故此时路径为 `/template-plugins/helloWorld`
--   在 `helloWorld.ts` 中，我们定义了一个 Get 接口，接口路径为 `/sayHelloWorld` ，故该接口的最终路径为 `/template-plugins/helloWorld/sayHelloWorld`
-
-### 接口文档
-
-详见 `Docs` 文件夹中的 `apis.md`
-
-[接口文档](https://github.com/nia-api/template-plugins/tree/main/Docs)
-
-### 文件代码
-
-`index.ts`
-
-```typescript
-// 引入 Router 实例
-import { Router } from 'express'
-
-// 实例化 Router 对象
-const router = Router()
-
-// 使用路由 （ 定义子路由路径 ）
-router.use('/helloWorld', async (req, res, next) =>
-    (await import('./router/helloWorld')).default(req, res, next)
-)
-
-// 导出路由插件简介名称说明 （ 仅用于显示方便辨认 ）
-export const Name = '示例模块'
-
-// 导出默认路由
-export default router
+# 插件配置
+plugins_config:
+    # ...
+    pay-code:
+        # 默认展示 可选 wechat(微信赞赏码) alipay(支付宝收款码) qq(QQ收款码) wechatpay(微信收款码)
+        default: alipay
+        # 收款码图片URL（为null则不展示）
+        alipay: null
+        wechat: null
+        qq: null
+        wechatpay: null
 ```
 
-`helloWorld.ts`
+#### 接口
 
-```typescript
-import { Router } from 'express'
-import { getMsg } from './../utils/getMsg'
+`/pay-code`
 
-const router = Router()
+GET
 
-router.get('/sayHelloWorld', (request, response) => {
-    response.send(getMsg())
-})
+query 参数
 
-export default router
-```
-
-`getMsg.ts`
-
-```typescript
-export const getMsg = () => {
-    return 'Hello World'
+```json
+{
+	"type": "wechay" | "alipay" | "qq" | "wechatpay" | null,
+    "isurl": any | null
 }
 ```
 
-### 路由使用说明
+如果参数 `isurl` 有值，不论是何值，他都会以 JSON 的形式来响应
 
-使用 `import`
-
-```typescript
-router.use('/helloWorld', async (req, res, next) =>
-    (await import('./router/helloWorld')).default(req, res, next)
-)
+```json
+{
+    "status": 200,
+    "msg": "获取收款码成功！",
+    "img": "图片URL",
+    "type": "alipay"
+}
 ```
 
-使用 `require` （尽可能使用 `import` 来代替 `require` ）
+如果 `type` 是一个错误的值（未设置收款码或其他值），则相应这段 JSON
 
-```typescript
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-router.use('/helloWorld', require('./router/helloWorld').default)
+```json
+{
+    "status": 400,
+    "msg": "非法的参数！"
+}
+```
+
+如果 `isurl` 无值， `type` 又是一个正确或空的参数，则返回以下 html
+
+```html
+<html>
+    <meta http-equiv="refresh" content="0;url=图片URL" />
+</html>
 ```
