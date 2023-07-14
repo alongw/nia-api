@@ -1,0 +1,15 @@
+静态资源可放入此目录
+
+路径：./pay-code/static/
+
+配置文件设置实例
+
+pay-code:
+    # 默认展示 可选 wechat(微信赞赏码) alipay(支付宝收款码) qq(QQ收款码) wechatpay(微信收款码)
+    default: alipay
+    # 收款码图片URL（为null则不展示）
+    alipay: ./pay-code/static/alipay.png
+    wechat: null
+    qq: null
+    wechatpay: null
+    
