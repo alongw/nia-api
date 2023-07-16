@@ -185,23 +185,6 @@ enable_plugins:
 
 # 插件配置
 plugins_config:
-    # pay-code 收款码插件
-    # 用于获取收款二维码
-    pay-code:
-        # 默认展示 可选 wechat(微信赞赏码) alipay(支付宝收款码) qq(QQ收款码) wechatpay(微信收款码)
-        default: alipay
-        # 收款码图片URL（为null则不展示） 绝对路径或相对路径
-        alipay: ./pay-code/static/alipay.png
-        wechat: null
-        qq: null
-        wechatpay: null
-
-    # color 颜色插件
-    # 用于快速获取常用的颜色
-    color:
-        # 定义颜色列表 参考下方的格式定义
-        colors:
-            pink: fa7298
     # ...
 ```
 
@@ -241,7 +224,30 @@ git subtree pull -P src/plugins/< 插件名 > < 插件仓库地址 > < 插件分
 
 `config.yaml`
 
-// TODO：修改配置文件
+示例，不一定为最新，插件配置具体请参考插件 `README.md` 自述文件
+
+```yaml
+# 插件配置
+plugins_config:
+    # pay-code 收款码插件
+    # 用于获取收款二维码
+    pay-code:
+        # 默认展示 可选 wechat(微信赞赏码) alipay(支付宝收款码) qq(QQ收款码) wechatpay(微信收款码)
+        default: alipay
+        # 收款码图片URL（为null则不展示） 绝对路径或相对路径
+        alipay: ./pay-code/static/alipay.png
+        wechat: null
+        qq: null
+        wechatpay: null
+
+    # color 颜色插件
+    # 用于快速获取常用的颜色
+    color:
+        # 定义颜色列表 参考下方的格式定义
+        colors:
+            pink: fa7298
+    # ...
+```
 
 <h2 align="center">Commit 和提交</h2>
 
