@@ -1,92 +1,105 @@
-<h1 align="center">示例插件</h1>
+# color
 
-这是 `nia-api` 的示例路由插件
+`nia-api` 的插件
 
-### 目录结构
+用于获取常用的颜色 以及 css 渐变语句
 
-```
-template-plugins
-├─ index.ts
-├─ README.md
-├─ Docs
-└─ router
- └─ helloWorld.ts
-└─ utils
- └─ getMsg.ts
+### 安装插件
+
+需在 `nia-api` 根目录执行
+
+```bash
+git subtree add -P src/plugins/color https://github.com/nia-api/color.git main
 ```
 
-### 接口说明
+### 更新插件
 
-由全局设置，路由的基础入口为 `/插件文件夹名/` ，故此时路径为 `/template-plugins/`
+需在 `nia-api` 根目录执行
 
--   在 `index.ts` 中，我们使用了 `/router/helloWorld.ts` 的子路由，并且设置了入口为 `/helloWorld` ，故此时路径为 `/template-plugins/helloWorld`
--   在 `helloWorld.ts` 中，我们定义了一个 Get 接口，接口路径为 `/sayHelloWorld` ，故该接口的最终路径为 `/template-plugins/helloWorld/sayHelloWorld`
-
-### 接口文档
-
-详见 `Docs` 文件夹中的 `apis.md`
-
-[接口文档](https://github.com/nia-api/template-plugins/tree/main/Docs)
-
-### 文件代码
-
-`index.ts`
-
-```typescript
-// 引入 Router 实例
-import { Router } from 'express'
-
-// 实例化 Router 对象
-const router = Router()
-
-// 使用路由 （ 定义子路由路径 ）
-router.use('/helloWorld', async (req, res, next) =>
-    (await import('./router/helloWorld')).default(req, res, next)
-)
-
-// 导出路由插件简介名称说明 （ 仅用于显示方便辨认 ）
-export const Name = '示例模块'
-
-// 导出默认路由
-export default router
+```bash
+git subtree pull -P src/plugins/color https://github.com/nia-api/color.git main
 ```
 
-`helloWorld.ts`
+### 配置文件
 
-```typescript
-import { Router } from 'express'
-import { getMsg } from './../utils/getMsg'
+```bash
+# 启用插件
+enable_plugins:
+  - color
+  # ...
 
-const router = Router()
+# 插件配置
+plugins_config:
+  # ...
 
-router.get('/sayHelloWorld', (request, response) => {
-    response.send(getMsg())
-})
+  # color 颜色插件
+  # 用于快速获取常用的颜色
+  color:
+    # 定义颜色列表 参考下方的格式定义
+    colors:
+      pink: fa7298
 
-export default router
 ```
 
-`getMsg.ts`
+### 接口
 
-```typescript
-export const getMsg = () => {
-    return 'Hello World'
+GET
+
+`/color`
+
+需传参
+
+```javascript
+{
+	color: 颜色的简称，与配置文件中的相同
+	type: gradient | null
 }
 ```
 
-### 路由使用说明
+若未传 `color` 值系统返回
 
-使用 `import`
-
-```typescript
-router.use('/helloWorld', async (req, res, next) =>
-    (await import('./router/helloWorld')).default(req, res, next)
-)
+```javascript
+{
+	"status": 400,
+	"msg": "非法的请求参数！"
+}
 ```
 
-使用 `require` （尽可能使用 `import` 来代替 `require` ）
+若传入的 `color` 值没有被配置文件定义
 
-```typescript
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-router.use('/helloWorld', require('./router/helloWorld').default)
+```javascript
+{
+	"status": 404,
+	"msg": "请求的颜色不存在"
+}
+```
+
+若传入了 `type` 但是是错误的值
+
+```javascript
+{
+	"status": 400,
+	"msg": "非法的参数！"
+}
+```
+
+正确传值，未传 `type` （ `color` 以 `pink` 为例 ）
+
+```javascript
+{
+	"status": 200,
+	"color": "#fa7298",
+	"hexadecimal": "fa7298",
+	"msg": "获取颜色成功！"
+}
+```
+
+正确传值，已传 `type` （ `color` 以 `pink` 为例 ）
+
+```javascript
+{
+	"status": 200,
+	"css": "linear-gradient(150deg, hsl(343, 0.93%, 10.71%) 15%, hsl(343, 0.93%, 0.71%) 70%, hsl(343, 0.93%, -9.29%) 94%)",
+	"msg": "获取渐变色语句成功！"
+}
 ```

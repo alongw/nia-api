@@ -9,5 +9,10 @@ export interface TypeConfig {
             qq: null | string
             wechatpay: null | string
         }
+        color: {
+            colors: {
+                [key: string]: string
+            }
+        }
     }
 }

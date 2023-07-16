@@ -5,16 +5,12 @@ import { Router } from 'express'
 const router = Router()
 
 // 使用路由 （ 定义子路由路径 ）
-router.use('/helloWorld', async (req, res, next) =>
-    (await import('./router/helloWorld')).default(req, res, next)
+router.use('/', async (req, res, next) =>
+    (await import('./router/index')).default(req, res, next)
 )
 
-// // require 写法
-// // eslint-disable-next-line @typescript-eslint/no-var-requires
-// router.use('/helloWorld', require('./router/helloWorld').default)
-
 // 导出路由插件简介名称说明 （ 仅用于显示方便辨认 ）
-export const Name = '示例模块'
+export const Name = '快捷颜色'
 
 // 导出默认路由
 export default router
