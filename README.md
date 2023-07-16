@@ -154,7 +154,7 @@ export default router
 
 打包后的最终代码将在 `/dist/code` 文件夹中
 
-## 其他打包命令
+### 其他打包命令
 
 使用 `yarn build:nolint` 来绕过 Eslint 语法检查直接打包
 
@@ -172,11 +172,42 @@ export default router
 
 ### 配置文件信息
 
-// TODO：配置文件信息
+示例，不一定为最新，插件配置具体请参考插件 `README.md` 自述文件
+
+```yaml
+# 监听端口
+listen_port: 3000
+
+# 启用插件
+enable_plugins:
+    - template-plugins
+    # ...
+
+# 插件配置
+plugins_config:
+    # pay-code 收款码插件
+    # 用于获取收款二维码
+    pay-code:
+        # 默认展示 可选 wechat(微信赞赏码) alipay(支付宝收款码) qq(QQ收款码) wechatpay(微信收款码)
+        default: alipay
+        # 收款码图片URL（为null则不展示） 绝对路径或相对路径
+        alipay: ./pay-code/static/alipay.png
+        wechat: null
+        qq: null
+        wechatpay: null
+
+    # color 颜色插件
+    # 用于快速获取常用的颜色
+    color:
+        # 定义颜色列表 参考下方的格式定义
+        colors:
+            pink: fa7298
+    # ...
+```
 
 ### 远程配置文件
 
-// TODO：数据库配置文件信息
+// TODO: 数据库远程配置文件
 
 <h2 align="center">路由插件</h2>
 
@@ -189,6 +220,22 @@ cd ./plugins
 ```
 
 克隆插件仓库，或下载插件解压
+
+推荐使用 `subtree` ，具体请参见插件具体 `README.md` 自述文件
+
+通用方法：在项目根目录执行
+
+安装插件
+
+```bash
+git subtree add -P src/plugins/< 插件名 > < 插件仓库地址 > < 插件分支 >
+```
+
+更新插件
+
+```bash
+git subtree pull -P src/plugins/< 插件名 > < 插件仓库地址 > < 插件分支 >
+```
 
 ### 使用路由插件
 
@@ -233,3 +280,7 @@ git push
 需在 vscode 插件市场安装 [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 > 由于当前 @typescript-eslint/typescript-estree 仅支持 >=3.3.1 <5.1.0 版本的 Typescript，但是我们使用的是 5.1.3 版本的 Typescript ， 因此在每次检查时都会弹出警告消息
+
+### 开源协议
+
+本项目采用 GNU Affero General Public License v3.0 开源协议

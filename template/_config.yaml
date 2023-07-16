@@ -18,4 +18,11 @@ plugins_config:
     wechat: null
     qq: null
     wechatpay: null
+  
+  # color 颜色插件
+  # 用于快速获取常用的颜色
+  color:
+    # 定义颜色列表 参考下方的格式定义
+    colors:
+      pink: fa7298
     
