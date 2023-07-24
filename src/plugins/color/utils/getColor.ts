@@ -32,3 +32,9 @@ export const generateGradient = (color: string) => {
     // 返回渐变字符串
     return gradient
 }
+
+export const getAllColor = () => {
+    return Object.keys(config.plugins_config.color.colors).map((key) => {
+        return key
+    })
+}
