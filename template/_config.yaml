@@ -5,6 +5,7 @@ listen_port: 3000
 enable_plugins:
   - template-plugins
   - pay-code
+  - color
 
 # 插件配置
 plugins_config:
