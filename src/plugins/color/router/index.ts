@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { getColor, generateGradient } from './../utils/getColor'
+import { getColor, generateGradient, getAllColor } from './../utils/getColor'
 import logger from './../../../utils/log'
 
 import type { Request } from './../../../types/Request'
@@ -20,12 +20,14 @@ router.get(
         res
     ) => {
         if (!req || !req.query || !req.query.color) {
+            const data = getAllColor()
             logger.info(
-                `[color] 用户[${req.ip}] 请求 null 颜色，因为没有 color 参数，因此返回 { status: 400 , msg: '非法的请求参数！' }`
+                `[color] 用户[${req.ip}] 请求 null 颜色，因为没有 color 参数，因此返回所有可用颜色列表 { status: 200 , msg: '获取预设颜色数据成功!' , colorList: ${data} } `
             )
             return res.send({
-                status: 400,
-                msg: '非法的请求参数！'
+                status: 200,
+                msg: '获取预设颜色数据成功!',
+                colorList: data
             })
         }
 

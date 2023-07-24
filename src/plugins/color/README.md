@@ -51,17 +51,31 @@ GET
 
 ```javascript
 {
-	color: 颜色的简称，与配置文件中的相同
+	color: 颜色的简称，与配置文件中的相同 | null
 	type: gradient | null
 }
 ```
 
-若未传 `color` 值系统返回
+若未传 `color` 值系统返回目前可获取的颜色列表
 
 ```javascript
 {
-	"status": 400,
-	"msg": "非法的请求参数！"
+	"status": 200,
+	"msg": "获取预设颜色数据成功!",
+	"colorList": [
+		"pink",
+		"blue",
+		"aqua",
+		"grey",
+		"skyblue",
+		"indigo",
+		"orange",
+		"green",
+		"red",
+		"purple",
+		"black",
+		"brown"
+	]
 }
 ```
 
