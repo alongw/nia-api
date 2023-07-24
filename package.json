@@ -1,9 +1,9 @@
 {
-    "name": "template-typescript",
+    "name": "nia-api",
     "version": "1.0.0",
-    "description": "ts项目模板",
+    "description": "nia-api 自用 api 服务器",
     "main": "src/app.ts",
-    "repository": "https://github.com/alongw/template-typescript",
+    "repository": "https://github.com/alongw/nia-api",
     "author": "alongw <alongw@alongw.cn>",
     "license": "MIT",
     "scripts": {
