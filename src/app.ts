@@ -26,6 +26,11 @@ app.use('/', (req, res, next) => {
     next()
 })
 
+// 加载系统路由
+app.use('/', async (req, res, next) =>
+    (await import('./router/index')).default(req, res, next)
+)
+
 // 加载路由插件
 config.enable_plugins.forEach(async (e) => {
     const { default: plugin, Name: pluginName } = await import(`./plugins/${e}`)
