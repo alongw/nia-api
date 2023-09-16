@@ -33,7 +33,7 @@ jobs:
                   yarn build
                   mv ./dist ./nia
                   cd ./nia
-                  echo ${{ secrets.CONFIG_FILE }} > .env
+                  echo "${{ secrets.CONFIG_FILE }}" > .env
                   cd ..
 
             - name: Deploy project to server
