@@ -45,5 +45,5 @@ jobs:
                   REMOTE_USER: ${{ secrets.SERVER_USER }}
                   TARGET: ${{secrets.SERVER_PATH}}
                   REMOTE_PORT: ${{ secrets.SERVER_PORT }}
-                  SCRIPT_BEFORE: 'pm2 stop nia-api'
-                  SCRIPT_AFTER: 'pm2 start nia-api'
+                  SCRIPT_BEFORE: '/home/ubuntu/.yarn/bin/pm2 stop nia-api'
+                  SCRIPT_AFTER: '/home/ubuntu/.yarn/bin/pm2 start nia-api'
