@@ -41,6 +41,9 @@ jobs:
               with:
                   SSH_PRIVATE_KEY: ${{ secrets.SERVER_KEY }}
                   SOURCE: nia/
-                  REMOTE_HOST: '${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PORT }}'
+                  REMOTE_HOST: ${{ secrets.SERVER_HOST }}
                   REMOTE_USER: ${{ secrets.SERVER_USER }}
                   TARGET: ${{secrets.SERVER_PATH}}
+                  REMOTE_PORT: ${{ secrets.SERVER_PORT }}
+                  SCRIPT_BEFORE: 'pm2 stop nia-api'
+                  SCRIPT_AFTER: 'pm2 start nia-api'
