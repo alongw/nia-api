@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            SERVER_HOST: ${{ secrets.SERVER_HOST }}
+            SERVER_PORT: ${{ secrets.SERVER_PORT }}
+            SERVER_USER: ${{ secrets.SERVER_USER }}
+            SERVER_KEY: ${{ secrets.SERVER_KEY }}
+            SERVER_PATH: ${{ secrets.SERVER_PATH }}
+            CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
+        steps:
+            - name: Pulling source code from the repository
+              uses: actions/checkout@v3
+
+            - name: Setting the node version
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+
+            - name: Install project dependencies
+              run: yarn install
+
+            - name: Build project
+              run: |
+                  yarn build
+                  mv ./dist ./nia
+                  cd ./nia
+                  echo ${{ secrets.CONFIG_FILE }} > .env
+                  cd ..
+
+            - name: Deploy project to server
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  SSH_PRIVATE_KEY: ${{ secrets.SERVER_KEY }}
+                  SOURCE: nia/
+                  REMOTE_HOST: '${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_PORT }}'
+                  REMOTE_USER: ${{ secrets.SERVER_USER }}
+                  TARGET: ${{secrets.SERVER_PATH}}
