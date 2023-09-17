@@ -53,5 +53,5 @@ jobs:
                   SOURCE: dist/nia/
                   REMOTE_HOST: ${{ secrets.SERVER_HOST }}
                   REMOTE_USER: ${{ secrets.SERVER_USER }}
-                  TARGET: ${{secrets.SERVER_PATH}}
+                  TARGET: ${{secrets.SERVER_PATH}}/nia
                   REMOTE_PORT: ${{ secrets.SERVER_PORT }}
