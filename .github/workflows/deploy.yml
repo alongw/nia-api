@@ -43,15 +43,5 @@ jobs:
                   user: ${{secrets.SERVER_USER}}
                   key: ${{secrets.SERVER_KEY}}
                   port: ${{secrets.SERVER_PORT}}
-                  first_ssh: |
-                      export NVM_DIR="/.nvm"
-                      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" 
-                      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" 
-                      export PATH=$PATH:/home/ubuntu/.yarn/bin
-                      export PATH=$PATH:/.nvm/versions/node/v16.20.0/bin/node
-                      pm2 stop nia-api
                   scp: |
                       './nia/*' => $${{secrets.SERVER_PATH}}/nia/
-                  last_ssh: |
-                      pm2 start nia-api
-                      

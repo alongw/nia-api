@@ -66,6 +66,9 @@ copyFolderFiles('dist/tsc', 'dist/code')
 // 复制 file 文件夹中的文件到 dist/code 目录
 copyFolderFiles('dist/file', 'dist/code')
 
+// 复制 script 文件夹中的文件到 dist/code 目录
+copyFolderFiles('script', 'dist/code')
+
 // 复制 package.json 和 yarn.lock 文件到 dist/code 目录
 shell.cp('package.json', 'dist/code/package.json')
 shell.cp('yarn.lock', 'dist/code/yarn.lock')
