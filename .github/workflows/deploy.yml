@@ -40,9 +40,9 @@ jobs:
               uses: cross-the-world/ssh-scp-ssh-pipelines@latest
               with:
                   host: ${{secrets.SERVER_HOST}}
-                  user: $${{secrets.SERVER_USER}}
-                  key: $${{secrets.SERVER_KEY}}
-                  port: $${{secrets.SERVER_PORT}}
+                  user: ${{secrets.SERVER_USER}}
+                  key: ${{secrets.SERVER_KEY}}
+                  port: ${{secrets.SERVER_PORT}}
                   first_ssh: |
                       pm2 stop nia-api
                   scp: |
