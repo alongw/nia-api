@@ -37,13 +37,15 @@ jobs:
                   cd ..
 
             - name: Deploy project to server
-              uses: easingthemes/ssh-deploy@main
+              uses: cross-the-world/ssh-scp-ssh-pipelines@latest
               with:
-                  SSH_PRIVATE_KEY: ${{ secrets.SERVER_KEY }}
-                  SOURCE: nia/
-                  REMOTE_HOST: ${{ secrets.SERVER_HOST }}
-                  REMOTE_USER: ${{ secrets.SERVER_USER }}
-                  TARGET: ${{secrets.SERVER_PATH}}
-                  REMOTE_PORT: ${{ secrets.SERVER_PORT }}
-                  SCRIPT_BEFORE: 'export PATH=$PATH:/.nvm/versions/node/v16.20.0/bin/node && /home/ubuntu/.yarn/bin/pm2 stop nia-api'
-                  SCRIPT_AFTER: 'export PATH=$PATH:/.nvm/versions/node/v16.20.0/bin/node && /home/ubuntu/.yarn/bin/pm2 stop nia-api && /home/ubuntu/.yarn/bin/pm2 start nia-api'
+                  host: ${{secrets.SERVER_HOST}}
+                  user: $${{secrets.SERVER_USER}}
+                  key: $${{secrets.SERVER_KEY}}
+                  port: $${{secrets.SERVER_PORT}}
+                  first_ssh: |
+                      pm2 stop nia-api
+                  scp: |
+                      './nia/*' => $${{secrets.SERVER_PATH}}/nia/
+                  last_ssh: |
+                      pm2 start nia-api
