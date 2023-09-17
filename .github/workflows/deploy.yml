@@ -36,12 +36,22 @@ jobs:
                   echo "${{ secrets.CONFIG_FILE }}" > .env
                   cd ..
 
+            # - name: Deploy project to server
+            #   uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+            #   with:
+            #       host: ${{secrets.SERVER_HOST}}
+            #       user: ${{secrets.SERVER_USER}}
+            #       key: ${{secrets.SERVER_KEY}}
+            #       port: ${{secrets.SERVER_PORT}}
+            #       scp: |
+            #           './nia/*' => $${{secrets.SERVER_PATH}}/nia/
+
             - name: Deploy project to server
-              uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+              uses: easingthemes/ssh-deploy@main
               with:
-                  host: ${{secrets.SERVER_HOST}}
-                  user: ${{secrets.SERVER_USER}}
-                  key: ${{secrets.SERVER_KEY}}
-                  port: ${{secrets.SERVER_PORT}}
-                  scp: |
-                      './nia/*' => $${{secrets.SERVER_PATH}}/nia/
+                  SSH_PRIVATE_KEY: ${{ secrets.SERVER_KEY }}
+                  SOURCE: nia/
+                  REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+                  REMOTE_USER: ${{ secrets.SERVER_USER }}
+                  TARGET: ${{secrets.SERVER_PATH}}
+                  REMOTE_PORT: ${{ secrets.SERVER_PORT }}
