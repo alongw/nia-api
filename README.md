@@ -22,6 +22,7 @@
 plugins
 ├─ index.ts （目录的主入口文件）
 ├─ README.md （插件的详细介绍文件，以及每个接口的详细说明）
+├─ docs.md （这与其他文档不同，该文档将暴露给用户，所有用户可以通过相应的管理软件获得文档的内容）
 ├─ Docs （如果文档较多，可以将 README.md 以外的文件放在 Docs 目录中）
 └─ router
  └─ childRouter.ts （插件的路由文件）
@@ -73,6 +74,8 @@ export default router
 
 实际请求访问路径 `/插件名（插件文件夹的名字，也是配置文件里面的名字）/pay-images/getPayImages`
 
+补充：项目主仓库中，仅包含部分路由插件，其他插件需自行使用 `git subtree` 安装，具体方法请向下阅读
+
 <h2 align="center">部署和构建</h2>
 
 ### 部署项目
@@ -111,6 +114,72 @@ export default router
         node ./app.js
         ```
 
+注意：项目打包并没有内置 `node_modules` ，需要打包后手动安装，否则项目将无法正常运行。
+
+### 自动部署
+
+使用 Github Actions 来为项目自动部署
+
+仓库需要私密变量
+
+```yaml
+env:
+    SERVER_HOST: ${{ secrets.SERVER_HOST }} # 目标主机 IP 或域名
+    SERVER_PORT: ${{ secrets.SERVER_PORT }} # 目标主机端口
+    SERVER_USER: ${{ secrets.SERVER_USER }} # 目标主机登录用户名
+    SERVER_KEY: ${{ secrets.SERVER_KEY }} # 目标主机登录秘钥
+    SERVER_PATH: ${{ secrets.SERVER_PATH }} # 目标主机部署位置
+    CONFIG_FILE: ${{ secrets.CONFIG_FILE }} # 目标主机部署需要的配置文件
+```
+
+其他请自行查看并修改 `.github/workflows/deploy.yml`
+
+并没有给出详细的自动重启等部分的 CI 代码，需要自行手动部署
+
+### Nginx 反向代理
+
+我们推荐部署后使用 Nginx 反向代理
+
+可以将其作为整个站点进行部署，也可以将其作为总站点之一在子目录进行部署，子目录部署配置文件示例（部署在站点 `/nia` 目录下）
+
+```
+#PROXY-START/nia
+
+location ^~ /nia
+{
+    rewrite ^/nia(/.*)?$ $1 break;
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header REMOTE-HOST $remote_addr;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_http_version 1.1;
+    # proxy_hide_header Upgrade;
+
+    add_header X-Cache $upstream_cache_status;
+		#Set Nginx Cache
+
+
+    if ( $uri ~* "\.(gif|png|jpg|css|js|woff|woff2)$" )
+    {
+        expires 1m;
+    }
+    proxy_ignore_headers Set-Cookie Cache-Control expires;
+    proxy_cache cache_one;
+    proxy_cache_key $host$uri$is_args$args;
+    proxy_cache_valid 200 304 301 302 1m;
+}
+#PROXY-END/
+```
+
+记得处理一下路径（示例中已经加上）
+
+```
+rewrite ^/nia(/.*)?$ $1 break;
+```
+
 ### 构建项目
 
 -   从 [仓库](https://github.com/alongw/nia-api) 拉取源代码
@@ -139,6 +208,8 @@ export default router
     node ./app.js
     ```
 
+注意：项目打包并没有内置 `node_modules` ，需要打包后手动安装，否则项目将无法正常运行。
+
 ### 更好的打包
 
 使用更好的打包方案（自动化）
@@ -151,6 +222,7 @@ export default router
 -   将刚刚打包好 `/dist/tsc` 目录下所有文件复制到 `/dist/code`
 -   将 `/dist/file` 目录下所有文件复制到 `/dist/code` （如果有）
 -   将根目录下 `package.json` 及 `yarn.lock` 复制到 `/dist/code` 目录下
+-   复制其他文件...
 
 打包后的最终代码将在 `/dist/code` 文件夹中
 
@@ -162,7 +234,7 @@ export default router
 
 使用 `yarn build:lint` 以方便在没有安装全局环境时打包
 
-<h2 align="center">配置文件</h2>
+<h2 align="center">配置和存储</h2>
 
 ### 生成配置文件
 
@@ -188,11 +260,15 @@ plugins_config:
     # ...
 ```
 
+### 插件临时文件存储
+
+为使用方便以及解决每次修改插件都要修改全局配置文件的问题，特准备一个路径专用来存放插件的私有文件，目前还在开发中。
+
 ### 远程配置文件
 
-// TODO: 数据库远程配置文件
+// TODO: 远程配置共享和数据库配置文件
 
-<h2 align="center">路由插件</h2>
+<h2 align="center">接口和插件</h2>
 
 ### 安装路由插件
 
@@ -248,6 +324,10 @@ plugins_config:
             pink: fa7298
     # ...
 ```
+
+### 系统接口
+
+系统默认包含一些接口，这些接口往往和增益功能无关，他会占用 `/` 和 `/nia/*` 路径，这是为了对私有化 API 做准备，当前正在开发中 。
 
 <h2 align="center">Commit 和提交</h2>
 
