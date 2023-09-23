@@ -1,11 +1,11 @@
 {
     "name": "nia-api",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "nia-api 自用 api 服务器",
     "main": "src/app.ts",
     "repository": "https://github.com/alongw/nia-api",
     "author": "alongw <alongw@alongw.cn>",
-    "license": "MIT",
+    "license": "AGPL-3.0",
     "scripts": {
         "prepare": "husky install",
         "cz": "git-cz",
