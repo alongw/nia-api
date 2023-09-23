@@ -12,8 +12,9 @@ import config from './utils/config'
 // 创建 app 实例
 const app = express()
 
-// 解析JSON
+// 解析 JSON 和 URL 编码
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // 解决跨域问题
 app.use(cors())
