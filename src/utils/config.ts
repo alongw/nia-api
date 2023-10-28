@@ -5,12 +5,13 @@ import logger from './log'
 import type { TypeConfig } from './../types/config'
 
 try {
-    yaml.parse(fs.readFileSync('./config.yaml', 'utf8'))
+    yaml.parse(fs.readFileSync('./data/system/config.yaml', 'utf8'))
 } catch (error) {
     logger.warn('读取配置文件失败，将自动创建')
     try {
         const defaultConfigFile = fs.readFileSync('./template/_config.yaml', 'utf8')
-        fs.writeFileSync('./config.yaml', defaultConfigFile)
+        fs.mkdirSync('./data/system', { recursive: true })
+        fs.writeFileSync('./data/system/config.yaml', defaultConfigFile)
         logger.info('创建默认配置文件，请修改')
         process.exit()
     } catch (error) {
@@ -19,6 +20,8 @@ try {
     }
 }
 
-const configFile = yaml.parse(fs.readFileSync('./config.yaml', 'utf8')) as TypeConfig
+const configFile = yaml.parse(
+    fs.readFileSync('./data/system/config.yaml', 'utf8')
+) as TypeConfig
 
 export default configFile

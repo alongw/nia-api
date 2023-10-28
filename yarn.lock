@@ -360,6 +360,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/figlet@^1.5.7":
+  version "1.5.7"
+  resolved "https://registry.npmmirror.com/@types/figlet/-/figlet-1.5.7.tgz#50c4837c7d5cde77db69f1bef4422d46556e40ec"
+  integrity sha512-0+XwDLeH346mAl3fmw/AaEctBrhkcJl0wZezoNUQ5Tg6J5YW7xL2v9hH3Yg5L4dk/sogEdQexTrNncqjGKwoVw==
+
 "@types/glob@~7.2.0":
   version "7.2.0"
   resolved "https://registry.npmmirror.com/@types/glob/-/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
@@ -1439,6 +1444,11 @@ fastq@^1.6.0:
   integrity sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==
   dependencies:
     reusify "^1.0.4"
+
+figlet@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.npmmirror.com/figlet/-/figlet-1.7.0.tgz#46903a04603fd19c3e380358418bb2703587a72e"
+  integrity sha512-gO8l3wvqo0V7wEFLXPbkX83b7MVjRrk1oRLfYlZXol8nEpb/ON9pcKLI4qpBv5YtOTfrINtqb7b40iYY2FTWFg==
 
 figures@^3.0.0:
   version "3.2.0"
