@@ -82,7 +82,7 @@ export default router
 
 -   从 [仓库](https://github.com/alongw/nia-api) 拉取源代码 或 从 [Release](https://github.com/alongw/nia-api/releases) 下载稳定构建版本
 
-    #### 源代码部署
+    #### 使用源代码直接运行
 
     -   从 [仓库](https://github.com/alongw/nia-api) 拉取源代码
 
@@ -106,7 +106,7 @@ export default router
         npm run start
         ```
 
-    #### Release 稳定版构建
+    #### Release 稳定版部署
 
     -   从 Release 下载版本
 
@@ -129,7 +129,6 @@ env:
     SERVER_USER: ${{ secrets.SERVER_USER }} # 目标主机登录用户名
     SERVER_KEY: ${{ secrets.SERVER_KEY }} # 目标主机登录秘钥
     SERVER_PATH: ${{ secrets.SERVER_PATH }} # 目标主机部署位置
-    CONFIG_FILE: ${{ secrets.CONFIG_FILE }} # 目标主机部署需要的配置文件
 ```
 
 其他请自行查看并修改 `.github/workflows/deploy.yml`
@@ -195,8 +194,6 @@ rewrite ^/nia(/.*)?$ $1 break;
     ```bash
     yarn
     yarn build
-    cd ./dist/code
-    node ./app.js
     ```
 
     使用 `npm`
@@ -204,41 +201,40 @@ rewrite ^/nia(/.*)?$ $1 break;
     ```bash
     npm install
     npm run build
-    cd ./dist/code
-    node ./app.js
     ```
 
-注意：项目打包并没有内置 `node_modules` ，需要打包后手动安装，否则项目将无法正常运行。
+注意：一共会打包两个版本，`ncc` 和 `tsc` 各一个。其中，`tsc` 打包并没有内置 `node_modules` ，需要手动安装，否则项目将无法正常运行。插件会一起打包。
 
 ### 更好的打包
 
 使用更好的打包方案（自动化）
 
-当运行 `yarn build` 时会自动执行以下操作
+首次使用会创建 `dist` 目录，目录下会生成 `file` 文件夹，该文件夹内放置的内容会一并被直接复制到输出目录，可以在该文件夹内放 `node.exe` 等文件
 
--   检查是否有相关文件夹 `/dist` 、 `/dist/code` 、 `/dist/tsc` 、 `/dist/file` ，如果有则清空 `/dist/code` 及 `/dist/tsc` ，如果没有则创建
--   将 `/src` 下所有文件编译并打包至 `/dist/tsc`
--   将项目根目录下 `/public` 、 `/template` 以及 src 目录下 `/src/public` 文件夹完整复制到 `/dist/code`
--   将刚刚打包好 `/dist/tsc` 目录下所有文件复制到 `/dist/code`
--   将 `/dist/file` 目录下所有文件复制到 `/dist/code` （如果有）
--   将根目录下 `package.json` 及 `yarn.lock` 复制到 `/dist/code` 目录下
--   复制其他文件...
+打包时，会生成以下目录
 
-打包后的最终代码将在 `/dist/code` 文件夹中
+-   `tsc` tsc 打包后的文件
+-   `ncc` ncc 打包后的文件
+-   `out` ncc 打包后的输出文件（插件会使用 tsc 打包）
+-   `out-tsc` tsc 打包后的输出文件（体积较大）
 
 ### 其他打包命令
 
 使用 `yarn build:nolint` 来绕过 Eslint 语法检查直接打包
 
-使用 `yarn build:tsc` 来仅编译 `src` 目录下的文件
+使用 `yarn build:tsc` 来使用 `tsc` 仅编译 `src` 目录下的文件
 
 使用 `yarn build:lint` 以方便在没有安装全局环境时打包
+
+使用 `yarn build:ncc` 来使用 `ncc` 仅编译 `src` 目录下的文件
 
 <h2 align="center">配置和存储</h2>
 
 ### 生成配置文件
 
 每次运行都会检测项目根目录下的 `config.yaml`，如果没有，会自动生成
+
+截至 2023.10.28 ，我们更新了配置方案，插件的配置文件不再和全局配置完结共存。
 
 配置文件由项目根目录下的 `template/_config.yaml` 文件复制，若自动生成失败，请检查文件完整性以及运行权限
 
@@ -249,20 +245,29 @@ rewrite ^/nia(/.*)?$ $1 break;
 ```yaml
 # 监听端口
 listen_port: 3000
-
-# 启用插件
-enable_plugins:
-    - template-plugins
-    # ...
-
-# 插件配置
-plugins_config:
-    # ...
 ```
 
-### 插件临时文件存储
+### 插件文件存储系统
 
-为使用方便以及解决每次修改插件都要修改全局配置文件的问题，特准备一个路径专用来存放插件的私有文件，目前还在开发中。
+为使用方便以及解决每次修改插件都要修改全局配置文件的问题，响应 2023.10.28 新方案，新增了 `useDataFile` 钩子函数，使用该函数可在插件的私有目录进行读取和写入（当然这目录并不安全，因为任何插件都可以恶意访问）
+
+目录位于根目录下 `data` 文件夹中
+
+```typescript
+const { getFile, writeFile } = useDataFile('插件名') // 插件名是插件的唯一标识符
+
+getFile(
+    '需要获取的文件（相对路径绝对路径均可）',
+    '文件默认值（可选，若该文件不存在则自动使用默认值创建）'
+)
+
+writeFile(
+    '需要写入的文件（相对路径绝对路径均可）',
+    '文件的新内容（会覆盖文件内原有内容）'
+) // 并不推荐使用该方案来存储数据，而是推荐使用数据库来对数据进行存储
+```
+
+该方案建议仅用于存储一些必要的系统配置和需要由用户来输入的数据，比如插件配置文件。
 
 ### 远程配置文件
 
@@ -272,58 +277,66 @@ plugins_config:
 
 ### 安装路由插件
 
-进入插件目录 （ 开发环境为 `/src/plusins` ）
+#### 开发环境下安装插件
+
+进入插件目录
 
 ```bash
-cd ./plugins
+cd ./src/plusins
 ```
 
-克隆插件仓库，或下载插件解压
+克隆插件仓库，或下载插件源代码，将文件夹放入
 
-推荐使用 `subtree` ，具体请参见插件具体 `README.md` 自述文件
+如果需要二次封装 API 程序，推荐使用 `subtree `，如果仅仅是开发插件，推荐直接克隆
 
-通用方法：在项目根目录执行
-
-安装插件
+克隆插件
 
 ```bash
-git subtree add -P src/plugins/< 插件名 > < 插件仓库地址 > < 插件分支 >
+git clone < 插件仓库地址 >
 ```
 
 更新插件
 
 ```bash
+# 进入插件目录
+cd ./< 插件目录 >
+git pull
+```
+
+`subtree` 安装插件
+
+```bash
+git subtree add -P src/plugins/< 插件名 > < 插件仓库地址 > < 插件分支 >
+```
+
+`subtree` 更新插件
+
+```bash
 git subtree pull -P src/plugins/< 插件名 > < 插件仓库地址 > < 插件分支 >
+```
+
+无法使用 `ncc` 直接打包插件，因此会从 `tsc` 打包后的文件中复制过来
+
+直接运行打包会同时打包开发环境下已经安装的插件
+
+默认 `plugins` 会被 `.gitignore` 忽略，系统启动后若没有该文件夹则会自动创建
+
+#### 生产环境下安装插件
+
+前往插件的 Release 发布页，下载需要的版本，将其**连同根文件夹一起**解压到 `plugins` 中，记住一定要套一层文件夹，也不要多套，更不能直接把插件的代码直接丢到 `plugins` 的根目录下！
+
+理想状态 `plugins` 目录结构应该如下
+
+```
+plugins
+├─ 插件1
+├─ 插件2
+└─ ...
 ```
 
 ### 使用路由插件
 
-`config.yaml`
-
-示例，不一定为最新，插件配置具体请参考插件 `README.md` 自述文件
-
-```yaml
-# 插件配置
-plugins_config:
-    # pay-code 收款码插件
-    # 用于获取收款二维码
-    pay-code:
-        # 默认展示 可选 wechat(微信赞赏码) alipay(支付宝收款码) qq(QQ收款码) wechatpay(微信收款码)
-        default: alipay
-        # 收款码图片URL（为null则不展示） 绝对路径或相对路径
-        alipay: ./pay-code/static/alipay.png
-        wechat: null
-        qq: null
-        wechatpay: null
-
-    # color 颜色插件
-    # 用于快速获取常用的颜色
-    color:
-        # 定义颜色列表 参考下方的格式定义
-        colors:
-            pink: fa7298
-    # ...
-```
+截至 2023.10.28 ，已经不再使用全局配置文件。所有路由插件的内容都可以与主程序代码分离。
 
 ### 系统接口
 

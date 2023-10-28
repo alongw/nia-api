@@ -18,7 +18,8 @@
         "build": "npx eslint . && npx ts-node ./script/build.ts",
         "build:nolint": "npx ts-node ./script/build.ts",
         "build:tsc": "npx tsc",
-        "build:lint": "npx eslint . && npx ts-node ./script/build.ts"
+        "build:lint": "npx eslint . && npx ts-node ./script/build.ts",
+        "build:ncc": "ncc build src/app.ts -o dist/ncc"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.6.5",
