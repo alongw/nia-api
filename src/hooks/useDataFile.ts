@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'fs-extra'
 import logger from './../utils/log'
 
 export const useDataFile = (pluginsName: string) => {
@@ -10,6 +10,7 @@ export const useDataFile = (pluginsName: string) => {
             fs.readFileSync(path)
         } catch {
             // 创建该文件
+            fs.ensureFileSync(path)
             fs.writeFileSync(path, defaultFile || '', 'utf-8')
         }
         // 读取
