@@ -37,7 +37,9 @@ if (!fs.existsSync(__dirname + './../plugins')) {
 
 const plugins = fs.readdirSync(__dirname + './../plugins')
 plugins.forEach(async (e) => {
-    const { default: plugin, Name: pluginName } = await import(`./../plugins/${e}`)
+    const { default: plugin, Name: pluginName } = await import(
+        __dirname + `./../plugins/${e}`
+    )
     try {
         logger.info(`[system] 尝试加载插件 ${pluginName || '未知插件'}(/plugins/${e})`)
         app.use(`/${e}`, plugin)

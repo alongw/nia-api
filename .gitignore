@@ -1,5 +1,5 @@
-config.yaml
 /data
+/src/plugins
 
 # Logs
 logs
