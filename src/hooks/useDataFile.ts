@@ -3,7 +3,7 @@ import logger from './../utils/log'
 
 export const useDataFile = (pluginsName: string) => {
     // 获取文件
-    const getFile = (file: string, defaultFile?: string) => {
+    const getFile = (file: string, defaultFile?: string): string => {
         const path = `./data/${pluginsName}${file.at(0) === '/' ? file : `/${file}`}`
         // 检测文件是否存在
         try {
@@ -17,8 +17,22 @@ export const useDataFile = (pluginsName: string) => {
         return fs.readFileSync(path, 'utf-8') as string
     }
 
+    // 仅获取文件
+    const getFileOnly = (file: string): string | undefined => {
+        const path = `./data/${pluginsName}${file.at(0) === '/' ? file : `/${file}`}`
+        // 检测文件是否存在
+        try {
+            fs.readFileSync(path)
+        } catch {
+            // 返回空
+            return undefined
+        }
+        // 读取
+        return fs.readFileSync(path, 'utf-8') as string
+    }
+
     // 覆写文件
-    const writeFile = (file: string, value: string) => {
+    const writeFile = (file: string, value: string): boolean => {
         try {
             fs.writeFileSync(
                 `./data/${pluginsName}${file.at(0) === '/' ? file : `/${file}`}`,
@@ -34,6 +48,7 @@ export const useDataFile = (pluginsName: string) => {
 
     return {
         getFile,
-        writeFile
+        writeFile,
+        getFileOnly
     }
 }

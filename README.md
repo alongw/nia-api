@@ -254,12 +254,14 @@ listen_port: 3000
 目录位于根目录下 `data` 文件夹中
 
 ```typescript
-const { getFile, writeFile } = useDataFile('插件名') // 插件名是插件的唯一标识符
+const { getFile, getFileOnly, writeFile } = useDataFile('插件名') // 插件名是插件的唯一标识符
 
 getFile(
     '需要获取的文件（相对路径绝对路径均可）',
     '文件默认值（可选，若该文件不存在则自动使用默认值创建）'
 )
+
+getFileOnly('需要获取的文件（相对路径绝对路径均可）') // 仅获取文件，如果没有该文件则返回 undefine
 
 writeFile(
     '需要写入的文件（相对路径绝对路径均可）',
