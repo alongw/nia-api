@@ -15,7 +15,6 @@ jobs:
             SERVER_USER: ${{ secrets.SERVER_USER }}
             SERVER_KEY: ${{ secrets.SERVER_KEY }}
             SERVER_PATH: ${{ secrets.SERVER_PATH }}
-            CONFIG_FILE: ${{ secrets.CONFIG_FILE }}
         steps:
             - name: Pulling source code from the repository
               uses: actions/checkout@v3
@@ -31,20 +30,7 @@ jobs:
             - name: Build project
               run: |
                   yarn build
-                  mv ./dist/code ./dist/nia
-                  cd ./dist/nia
-                  echo "${{ secrets.CONFIG_FILE }}" > config.yaml
-                  cd ../../
-
-            # - name: Deploy project to server
-            #   uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-            #   with:
-            #       host: ${{secrets.SERVER_HOST}}
-            #       user: ${{secrets.SERVER_USER}}
-            #       key: ${{secrets.SERVER_KEY}}
-            #       port: ${{secrets.SERVER_PORT}}
-            #       scp: |
-            #           './nia/*' => $${{secrets.SERVER_PATH}}/nia/
+                  mv ./dist/out ./dist/nia
 
             - name: Deploy project to server
               uses: easingthemes/ssh-deploy@main
