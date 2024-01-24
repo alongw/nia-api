@@ -6,6 +6,12 @@ import fs from 'fs'
 import logger from './log'
 import config from './config'
 
+const isDev = process.env.NODE_ENV == 'develop'
+
+if (isDev) {
+    logger.warn('[system] 你正在使用开发模式运行 NIA - API')
+}
+
 // express app
 const app = express()
 
@@ -29,17 +35,18 @@ app.use('/', async (req, res, next) =>
     (await import('./../router/index')).default(req, res, next)
 )
 
+const pluginsPath = isDev ? __dirname + './../plugins' : __dirname + './plugins'
+
 // load plugins
-if (!fs.existsSync(__dirname + './../plugins')) {
+if (!fs.existsSync(pluginsPath)) {
     logger.warn('[system] 插件文件夹不存在，将自动创建')
-    fs.mkdirSync(__dirname + './../plugins')
+    fs.mkdirSync(pluginsPath)
 }
 
-const plugins = fs.readdirSync(__dirname + './../plugins')
+// const plugins = fs.readdirSync(__dirname + './../plugins')
+const plugins = fs.readdirSync(pluginsPath)
 plugins.forEach(async (e) => {
-    const { default: plugin, Name: pluginName } = await import(
-        __dirname + `./../plugins/${e}`
-    )
+    const { default: plugin, Name: pluginName } = await import(pluginsPath + `/${e}`)
     try {
         logger.info(`[system] 尝试加载插件 ${pluginName || '未知插件'}(/plugins/${e})`)
         app.use(`/${e}`, plugin)

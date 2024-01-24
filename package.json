@@ -14,7 +14,7 @@
         "lint": "eslint ./src/**/*.ts",
         "format": "prettier --write --cache .",
         "start": "yarn lint && npx ts-node src/app.ts",
-        "dev": "npx nodemon src/app.ts",
+        "dev": "set NODE_ENV=develop&& npx nodemon src/app.ts",
         "build": "npx eslint . && npx ts-node ./script/build.ts",
         "build:nolint": "npx ts-node ./script/build.ts",
         "build:tsc": "npx tsc",
