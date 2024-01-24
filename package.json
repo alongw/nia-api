@@ -25,6 +25,7 @@
         "@commitlint/cli": "^17.6.5",
         "@commitlint/config-angular": "^17.6.5",
         "@commitlint/cz-commitlint": "^17.5.0",
+        "@types/axios": "^0.14.0",
         "@types/cors": "^2.8.13",
         "@types/express": "^4.17.17",
         "@types/figlet": "^1.5.7",
