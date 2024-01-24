@@ -1,6 +1,6 @@
 {
     "name": "nia-api",
-    "version": "1.0.2",
+    "version": "1.0.3-M1",
     "description": "nia-api 自用 api 服务器",
     "main": "src/app.ts",
     "repository": "https://github.com/alongw/nia-api",

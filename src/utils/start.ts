@@ -35,7 +35,7 @@ app.use('/', async (req, res, next) =>
     (await import('./../router/index')).default(req, res, next)
 )
 
-const pluginsPath = isDev ? __dirname + './../plugins' : __dirname + './plugins'
+const pluginsPath = isDev ? __dirname + './../plugins' : './plugins'
 
 // load plugins
 if (!fs.existsSync(pluginsPath)) {
@@ -43,7 +43,6 @@ if (!fs.existsSync(pluginsPath)) {
     fs.mkdirSync(pluginsPath)
 }
 
-// const plugins = fs.readdirSync(__dirname + './../plugins')
 const plugins = fs.readdirSync(pluginsPath)
 plugins.forEach(async (e) => {
     const { default: plugin, Name: pluginName } = await import(pluginsPath + `/${e}`)
